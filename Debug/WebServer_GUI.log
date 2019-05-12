@@ -1,11 +1,12 @@
 ﻿  WebServer_GUI.cpp
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(455): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(374): warning C4101: 'cmd': unreferenced local variable
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(376): warning C4101: 'tmp': unreferenced local variable
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(375): warning C4101: 'id': unreferenced local variable
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(378): warning C4101: 'targetId': unreferenced local variable
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(372): warning C4101: 'sendBuf': unreferenced local variable
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(393): warning C4101: 'userIncludeDownLine': unreferenced local variable
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(648): warning C4101: 'msg': unreferenced local variable
-C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(562): warning C4715: 'ClientThread': not all control paths return a value
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(479): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(379): warning C4101: 'cmd': unreferenced local variable
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(381): warning C4101: 'tmp': unreferenced local variable
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(380): warning C4101: 'id': unreferenced local variable
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(383): warning C4101: 'targetId': unreferenced local variable
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(377): warning C4101: 'sendBuf': unreferenced local variable
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(398): warning C4101: 'userIncludeDownLine': unreferenced local variable
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(708): warning C4101: 'msg': unreferenced local variable
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(623): warning C4715: 'ClientThread': not all control paths return a value
+C:\Users\PhungVanHoang\source\repos\WebServer_GUI\WebServer_GUI.cpp(814): warning C4172: returning address of local variable or temporary: name
   WebServer_GUI.vcxproj -> C:\Users\PhungVanHoang\source\repos\WebServer_GUI\Debug\WebServer_GUI.exe

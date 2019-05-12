@@ -65,7 +65,8 @@ void createNewAccount(char username[], char password[], char name[]);
 bool updateInformation(const char* buffer, char realUser[]);
 bool checkOldPassword(const char* pOldPassword);
 void changeValue(const char* pUsername, const char* type, const char* pValue);
-void changeFileName(const char* from, const char* to);
+void changeFileName();
+char* getName(char* username);
 //UI handler
 void ListBox_updateListAccount();
 void Listbox_updateListCommand();
@@ -157,14 +158,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    listWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-	   500, 5, 500, 700, nullptr, nullptr, hInstance, nullptr);
+	   500, 5, 600, 700, nullptr, nullptr, hInstance, nullptr);
    HWND adminManagement = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Admin Management"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 100, 0, 150, 40, listWnd, (HMENU)IDC_EDIT_TEXT_STATIC_ADMIN_MANAGEMENT, GetModuleHandle(NULL), NULL);
    //HWND nameOfList = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("LIST COMMAND HISTORY"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 5, 60, 360, 40, listWnd, (HMENU)IDC_EDIT_TEXT_STATIC_NAME_OF_LIST, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("LISTBOX"), TEXT("LIST HISTORY"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOVSCROLL, 5, 110, 360, 530, listWnd, (HMENU)IDC_LIST, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("History"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 5, 60, 178, 40, listWnd, (HMENU)IDC_BUTTON_LIST_HISTORY, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Accounts"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 187, 60, 178, 40, listWnd, (HMENU)IDC_BUTTON_LIST_ACCOUNT, GetModuleHandle(NULL), NULL);
-   buttonAdd = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Add Account"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 370, 110, 110, 40, listWnd, (HMENU)IDC_BUTTON_ADD, GetModuleHandle(NULL), NULL);
-   buttonDelete = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Delete Account"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 370, 160, 110, 40, listWnd, (HMENU)IDC_BUTTON_DELETE, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("LISTBOX"), TEXT("LIST HISTORY"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOVSCROLL, 5, 110, 460, 530, listWnd, (HMENU)IDC_LIST, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("History"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 5, 60, 228, 40, listWnd, (HMENU)IDC_BUTTON_LIST_HISTORY, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Accounts"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 237, 60, 228, 40, listWnd, (HMENU)IDC_BUTTON_LIST_ACCOUNT, GetModuleHandle(NULL), NULL);
+   buttonAdd = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Add Account"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 470, 110, 110, 40, listWnd, (HMENU)IDC_BUTTON_ADD, GetModuleHandle(NULL), NULL);
+   buttonDelete = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Delete Account"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 470, 160, 110, 40, listWnd, (HMENU)IDC_BUTTON_DELETE, GetModuleHandle(NULL), NULL);
    ShowWindow(buttonAdd, SW_HIDE);
    ShowWindow(buttonDelete, SW_HIDE);
 
@@ -177,17 +178,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    }
 
    addAccountWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-	   500, 5, 500, 700, nullptr, nullptr, hInstance, nullptr);
+	   500, 5, 600, 700, nullptr, nullptr, hInstance, nullptr);
    CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Add Account"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 150, 0, 150, 40, addAccountWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("User"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 20, 60, 100, 40, addAccountWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 140, 60, 300, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_USER, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Password"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 20, 110, 100, 40, addAccountWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 140, 110, 300, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_PASSWORD, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Name"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 20, 160, 100, 40, addAccountWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 140, 160, 300, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_NAME, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Add"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 100, 220, 110, 40, addAccountWnd, (HMENU)IDC_BUTTON_ADD_SUBMIT, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Back"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 220, 220, 110, 40, addAccountWnd, (HMENU)IDC_BUTTON_ADD_BACK, GetModuleHandle(NULL), NULL);
-   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Adding..."), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 100, 280, 300, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_STATIC_ADD_STATUS, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("User"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 20, 60, 150, 40, addAccountWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 190, 60, 350, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_USER, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Password"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 20, 110, 150, 40, addAccountWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 190, 110, 350, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_PASSWORD, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Name"), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 20, 160, 150, 40, addAccountWnd, (HMENU)NULL, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 190, 160, 350, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_NAME, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Add"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 100, 220, 160, 40, addAccountWnd, (HMENU)IDC_BUTTON_ADD_SUBMIT, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("BUTTON"), TEXT("Back"), WS_CHILD | WS_VISIBLE | WS_TABSTOP | BS_DEFPUSHBUTTON, 270, 220, 160, 40, addAccountWnd, (HMENU)IDC_BUTTON_ADD_BACK, GetModuleHandle(NULL), NULL);
+   CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("STATIC"), TEXT("Adding..."), WS_CHILD | WS_VISIBLE | WS_TABSTOP, 100, 280, 350, 40, addAccountWnd, (HMENU)IDC_EDIT_TEXT_STATIC_ADD_STATUS, GetModuleHandle(NULL), NULL);
 
    ShowWindow(listWnd, nCmdShow);
    UpdateWindow(listWnd);
@@ -276,26 +277,28 @@ void Listbox_updateListCommand(){
 	fstream data;
 	data.open("commandlog.txt", ios::in);
 	string line;
-	char username[32], ip[16], command[32], currentDateTime[32], buffToAddListBox[128];
+	char username[32], ip[16], command[64], currentDateTime[32], buffToAddListBox[128];
 
 	//clear listbox
 	SendMessage(GetDlgItem(listWnd, IDC_LIST), LB_RESETCONTENT, 0, 0);
 	//update command
 	if (data.is_open()) {
 		while (getline(data, line)) {
-			sscanf(line.c_str(), "%[^&] & %[^&] & %[^&] & %[^\n] \n", username, ip, command, currentDateTime);
-			sprintf(buffToAddListBox, "%-10s %-15s %-10s %-12s", username, ip, command, currentDateTime);
+			sscanf(line.c_str(), "%[^&] & %[^&] & %[^&] & %[^\n] \n", username, command, ip, currentDateTime);
+			sprintf(buffToAddListBox, "%-8s %-35s %-12s %-12s", username, command, ip, currentDateTime);
 			SendDlgItemMessageA(listWnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM)buffToAddListBox);
 			SendDlgItemMessageA(listWnd, IDC_LIST, WM_VSCROLL, SB_BOTTOM, 0);
 		}
 	}
 	UpdateWindow(listWnd);
+	ShowWindow(buttonAdd, SW_HIDE);
+	ShowWindow(buttonDelete, SW_HIDE);
 	data.close();
 }
 void ListBox_updateListAccount() {
 	fstream data;
 	string line;
-	char username[32], password[16], name[32], buffToAddListBox[64];
+	char username[64], password[64], name[64], buffToAddListBox[192];
 	 size_t max = 15;
 	 const char space = 'x';
 	data.open("data.txt", ios::in);
@@ -303,12 +306,14 @@ void ListBox_updateListAccount() {
 	if (data.is_open()) {
 		while (getline(data, line)) {
 			sscanf(line.c_str(), "%[^ ]  %[^ ]   %[^\n]\n", username, password, name);
-			sprintf(buffToAddListBox, "%-15s %-15s %-15s", username, password, name);
+			sprintf(buffToAddListBox, "%-20s %-15s %-24s", username, password, name);
 			SendDlgItemMessageA(listWnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM)buffToAddListBox);
 			SendDlgItemMessageA(listWnd, IDC_LIST, WM_VSCROLL, SB_BOTTOM, 0);
 		}
 	}
 	UpdateWindow(listWnd);
+	ShowWindow(buttonAdd, SW_SHOW);
+	ShowWindow(buttonDelete, SW_SHOW);
 	data.close();
 }
 void deleteAccount(int i) {
@@ -329,7 +334,7 @@ void deleteAccount(int i) {
 	}
 	data.close();
 	newFile.close();
-	changeFileName("temp.txt", "data.txt");
+	changeFileName();
 	//xoa het thong tin di
 	newFile.open("temp.txt", ios::out);
 	newFile.close();
@@ -339,7 +344,7 @@ void changeWindowBaseOnParentWindowPosition(HWND parent, HWND current) {
 	RECT rect;
 	GetWindowRect(parent, &rect);
 	//SetWindowPos(current, HWND_TOP, rect.left, rect.top, 400, 600, SWP_SHOWWINDOW); this works, but i like the other way
-	SetWindowPos(current, NULL, rect.left, rect.top, 500, 700, NULL);
+	SetWindowPos(current, NULL, rect.left, rect.top, 600, 700, NULL);
 	ShowWindow(parent, SW_HIDE);
 	ShowWindow(current, SW_SHOW);
 	UpdateWindow(parent);
@@ -368,7 +373,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 	struct ClientThreadInfo clientStruct = *(ClientThreadInfo*)lpParam;
 	SOCKET client = clientStruct.client;
 	char* ipAddress = clientStruct.ipAddress;
-	char buf[1024];
+	char buf[1024 * 8];
 	char sendBuf[256];
 	int ret;
 	char cmd[64];
@@ -392,7 +397,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 		char* userCookie = strstr(buf, "userlogined=");
 		char userIncludeDownLine[64];
 		// day la thang user dang dang nhap realUser
-		char realUser[64];
+		char realUser[32];
 		if (restBody) {
 			printf("%s", restBody);
 			strncat(cookie, restBody + 6, 10);
@@ -410,6 +415,8 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 		}
 
 		if (strncmp(buf, "GET / HTTP", 10) == 0) {
+			const char* yo = "HTTP/1.1 200 OK\r\n Content-Type: text/html\r\n\r\n";
+			send(client, yo, strlen(yo), 0);
 			printf("da nhan request\n");
 			//chua dang nhap
 			if (!exist) {
@@ -425,7 +432,8 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 				fclose(f);
 			}
 			else {
-				FILE* f = fopen("home.html", "rb");
+				//send phan dau cua trang home
+				FILE* f = fopen("headerHome.txt", "rb");
 				while (true)
 				{
 					ret = fread(buf, 1, sizeof(buf), f);
@@ -435,6 +443,22 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 						break;
 				}
 				fclose(f);
+				// ghep ten user
+				printf("user name la: %s", realUser);
+				char* name = realUser;
+				char* nameUserinDb = getName(name);
+				send(client, nameUserinDb, strlen(nameUserinDb) + 1, 0);
+				FILE* fEnd = fopen("endHome.txt", "rb");
+				while (true)
+				{
+					ret = fread(buf, 1, sizeof(buf), fEnd);
+					if (ret > 0)
+						send(client, buf, ret, 0);
+					else
+						break;
+				}
+				fclose(fEnd);
+				////////////////////////////
 			}
 			closesocket(client);
 		}
@@ -454,7 +478,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 			if (a) {
 				srand(time(NULL));
 				const char* header = "HTTP/1.1 200 OK\r\n Set-Cookie: Token=";
-				const char* end = "\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Ban da dang nhap thanh cong</h1></br><p>An vao day de tro ve trang chu</p><a href='/'><button>Go</button></a></body></html>";
+				const char* end = "\r\nContent-Type: text/html\r\n\r\n";
 				strcat(msg, header);
 				char token[11];
 				generateToken(token);
@@ -463,15 +487,37 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 				strcat(msg, "userlogined=");
 				strcat(msg, username);
 				strcat(msg, end);
+				send(client, msg, strlen(msg), 0);
+				FILE* f = fopen("loginSuccess.html", "rb");
+				while (true)
+				{
+					ret = fread(buf, 1, sizeof(buf), f);
+					if (ret > 0)
+						send(client, buf, ret, 0);
+					else
+						break;
+				}
+				fclose(f);
 			}
 			else {
-				strcat(msg, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Dang nhap khong thanh cong</h1></br><p>An vao day de dang nhap lai</p><a href='/'><button>Go</button></a></body></html>");
+				const char* yo = "HTTP/1.1 200 OK\r\n Content-Type: text/html\r\n\r\n";
+				send(client, yo, strlen(yo), 0);
+				FILE* f = fopen("loginFail.html", "rb");
+				while (true)
+				{
+					ret = fread(buf, 1, sizeof(buf), f);
+					if (ret > 0)
+						send(client, buf, ret, 0);
+					else
+						break;
+				}
+				fclose(f);
 			}
-
-			send(client, msg, strlen(msg), 0);
 			closesocket(client);
 		}
-		else if (strncmp(buf, "GET /sign-up", 12) == 0 && exist) {
+		else if (strncmp(buf, "GET /sign-up", 12) == 0) {
+			const char* yo = "HTTP/1.1 200 OK\r\n Content-Type: text/html\r\n\r\n";
+			send(client, yo, strlen(yo), 0);
 			FILE* f = fopen("sign-up.html", "rb");
 			while (true)
 			{
@@ -484,7 +530,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 			closesocket(client);
 			fclose(f);
 		}
-		else if (strncmp(buf, "POST /sign-up", 13) == 0 && exist) {
+		else if (strncmp(buf, "POST /sign-up", 13) == 0) {
 			// lay du lieu o day roi ghi vao file data.txt,nho check user da ton tai hay cgya
 			if (signUp(buf) == true) {
 				const char* msg = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Dang ki thanh cong ,an vao day dang nhap lai </br> <a href='/'><button>Go</button></a></h1> <a href='/'><button>Back</button></a> </body></html>";
@@ -507,8 +553,7 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 			saveCommandUser(realUser, realCommand, ipAddress);
 			strcat(realCommand, " > c:\\test_server\\out.txt");
 			printf("command: %s", realCommand);
-			int result = system(realCommand);
-			if (result == -1) printf("lenh sai roi ngu vl");
+			system(realCommand);
 			FILE * f = fopen("C:\\test_server\\out.txt", "r");
 			char msg[20148] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Ket qua:</h1> ";
 			while (fgets(fileBuf, sizeof(fileBuf), f))
@@ -525,12 +570,22 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 			closesocket(client);
 		}
 		else if (strncmp(buf, "GET /log-out", 12) == 0) {
-			const char* msg = "HTTP/1.1 200 OK\r\n Set-Cookie: Token=aaaa\r\nContent-Type: text/html\r\n\r\n<html><body><h1>Dang xuat thanh cong </h1> <a href='/'><button>Back</button></a> </body></html>";
+			const char* msg = "HTTP/1.1 200 OK\r\n Set-Cookie: Token=aaaa\r\nContent-Type: text/html\r\n\r\n";
 			send(client, msg, strlen(msg), 0);
+			FILE* f = fopen("logoutSuccess.html", "rb");
+			while (true)
+			{
+				ret = fread(buf, 1, sizeof(buf), f);
+				if (ret > 0)
+					send(client, buf, ret, 0);
+				else
+					break;
+			}
+			fclose(f);
 			removeToken(cookie);
 			closesocket(client);
 		}
-		else if (strncmp(buf, "GET /update", 11) == 0) {
+		else if (strncmp(buf, "GET /update", 11) == 0 && exist) {
 			const char* yo = "HTTP/1.1 200 OK\r\n Content-Type: text/html\r\n\r\n";
 			send(client, yo, strlen(yo), 0);
 			FILE* f = fopen("UpdateInfomation.html", "rb");
@@ -557,6 +612,12 @@ DWORD WINAPI ClientThread(LPVOID lpParam)
 			}
 			closesocket(client);
 		}
+		else {
+		printf("da vao dy");
+		const char* msg = "HTTP/1.1 200 OK\r\n Content-Type: text/html\r\n\r\n<html><body><h1>Request Invalid</h1> <a href='/'><button>Back</button></a> </body></html>";
+		send(client, msg, strlen(msg), 0);
+		closesocket(client);
+		}
 	}
 	closesocket(client);
 }
@@ -569,7 +630,7 @@ char* connection_info(struct sockaddr_in& client)
 bool check_pass(char username[], char password[]) {
 	FILE* f = fopen("data.txt", "rb");
 	int ret;
-	char buf[1024];
+	char buf[1024 * 8];
 	char userDb[128], passDb[128], end[128];
 	int i = 0;
 	int count = 0;
@@ -594,6 +655,7 @@ bool check_pass(char username[], char password[]) {
 
 					if (strcmp(username, userDb) == 0 && strcmp(password, passDb) == 0) {
 						printf("dung mat khau");
+						fclose(f);
 						return true;
 					}
 				}
@@ -638,8 +700,6 @@ void removeToken(char cookie[]) {
 	}
 }
 
-
-
 bool signUp(const char* buffer) {
 	char* body = strstr((char*)buffer, "username=");
 	char username[64];
@@ -671,6 +731,7 @@ bool signUpCheck(char username[], char password[]) {
 			if (strcmp(username, usernameData.c_str()) == 0) {
 				//dang ky that bai
 				printf("Tai khoan da ton tai trong he thong!\n");
+				data.close();
 				return FALSE;
 			}
 		}
@@ -686,6 +747,7 @@ void createNewAccount(char username[], char password[], char name[]) {
 		data << username << " " << password << " " << name << "\n";
 	}
 	data.close();
+	ListBox_updateListAccount();
 }
 
 void saveCommandUser(char username[], char* ip, char command[]) {
@@ -703,14 +765,16 @@ bool updateInformation(const char* buffer, char username[]) {
 	char oldPassword[64] = "\0";
 	char newPassword[64] = "\0";
 	char newName[32] = "\0";
+	char* usernamePointer = username;
+	printf("realname duoc truyen vao o updateinfor la: %s \n", username);
 	sscanf(body, "oldPassword=%[^\r] \r\nnewPassword=%[^\r] \r\nnewName=%[^\r] \r\n", oldPassword, newPassword, newName);
 	if (checkOldPassword(oldPassword) == true) {
 		if (strlen(newPassword) > 0) {
-			changeValue(username, "password", newPassword);
+			changeValue(usernamePointer, "password", newPassword);
 		}
 		if (strlen(newName) > 0) {
 			printf("new name 1 : %s", newName);
-			changeValue(username, "name", newName);
+			changeValue(usernamePointer, "name", newName);
 		}
 	}
 	else return false;
@@ -735,6 +799,27 @@ bool checkOldPassword(const char* pOldPassword) {
 	data.close();
 	return false;
 }
+char* getName(char* username) {
+	fstream data;
+	string line;
+	data.open("data.txt", ios::in);
+	printf("user name truyen getname: %s", username);
+	char userDb[64], passDb[64], name[64];
+	if (data.is_open()) {
+		while (getline(data, line)) {
+			sscanf(line.c_str(), "%s %s %[^\n]", userDb, passDb, name);
+			printf("user DB getname: %s", userDb);
+			if (strcmp(username, userDb) == 0) {
+				data.close();
+				return name;
+			}
+		}
+	}
+	data.close();
+	return (char*)("user");
+}
+
+
 
 void changeValue(const char* pUsername, const char* type, const char* pValue) {
 	fstream data;
@@ -765,17 +850,15 @@ void changeValue(const char* pUsername, const char* type, const char* pValue) {
 	}
 	data.close();
 	newFile.close();
-	changeFileName("temp.txt", "data.txt");
+	changeFileName();
 	//xoa het thong tin di
 	newFile.open("temp.txt", ios::out);
 	newFile.close();
 }
-void changeFileName(const char* from, const char* to) {
+void changeFileName() {
 	int res = 0;
-	res = rename(from, "ttemp");
-	res = rename(to, "dtemp");
-	res = rename("ttemp", "data.txt");
-	res = rename("dtemp", "temp.txt");
+	res = remove("data.txt");
+	res = rename("temp.txt", "data.txt");
 }
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
